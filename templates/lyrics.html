@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Local Search</title>
+    <link href="{{ url_for('static', filename='css/search.css') }}" rel="stylesheet">
+  </head>
+  <body>
+    <!-- Navigation bar -->
+    <div class="navbar">
+		<a style="width: 100%;" href="{{ url_for('whoosh_search') }}">back</a>
+    </div>
+
+	<br>
+
+	<h1> {{ result["song"] }} </h1>
+
+	<br>
+
+	<ul>
+		{{ result["lyrics"] }}
+	</ul>
+
+  </body>
+</html>

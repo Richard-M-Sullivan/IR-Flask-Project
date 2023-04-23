@@ -24,11 +24,15 @@
 
 	{% if results != None %}
 	<ul>
-	{% for result in organic_results %}
+	{% for  result in results %}
+	  {% if loop.index0 == 0 %}
+	    <hr>
+	  {% endif %}
 	  <li>
-		<a href="{{ result.link }}">{{ result.title }}</a>
-		<p>{{ result.snippet }}</p>
+	    <a href="local-display/{{ loop.index0 }}">{{ '"' }}{{ result["song"] }}{{ '"' }} by {{ result["artist"] }}: Ranked #{{ result["rank"] }} in {{ result["year"] }}.</a>
+		<p>{{ result.highlights("lyrics")|safe }}<p>
 	  </li>
+	  <hr>
 	{% endfor %}
 	</ul>
 	{% endif %}
