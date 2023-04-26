@@ -7,7 +7,7 @@
   <body>
     <!-- Navigation bar -->
     <div class="navbar">
-		<a href="{{ url_for('google_search') }}">Web Search</a>
+		<a>Web Search</a>
 		<a href="{{ url_for('whoosh_search') }}">Local Search</a>
     </div>
 
@@ -25,11 +25,15 @@
 
 	{% if results != None %}
 	<ul>
-	{% for result in organic_results %}
+	{% for result in results %}
+	  {% if loop.index0 == 0 %}
+	    <hr>
+	  {% endif %}
 	  <li>
-		<a href="{{ result.link }}">{{ result.title }}</a>
-		<p>{{ result.snippet }}</p>
+		<a href="{{ result['link'] }}">{{ result['title'] }}</a>
+		<p>{{ result['snippet'] }}</p>
 	  </li>
+	  <hr>
 	{% endfor %}
 	</ul>
 	{% endif %}
