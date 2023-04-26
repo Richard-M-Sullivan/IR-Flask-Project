@@ -1,0 +1,109 @@
+Information Retrieval Project
+
+Richard Sullivan
+
+-------------------------------------------------------------------------------
+Project URL:
+http://ir-project.fly.dev
+
+-------------------------------------------------------------------------------
+Project Description:
+
+The purpose of the information retrieval project is to practice using
+real-world information retrieval systems. This is highlighted in the project
+with the web search and local search capabilities; both types of searches
+require different different techniqies to query results. After going through
+the process of building the application I have become more familiar with
+information retrieval tasks, and feel confident that I could use the knowledge
+gained to create useful tools and products relying on such information
+retrieval technologies.
+
+-------------------------------------------------------------------------------
+
+Web Search:
+	Get and display the web results of a users query
+
+How to use
+	Type in your query, as you would with google, and hit the search button.
+	The application will show you the top results that come up for that query
+	in google's search engine.
+
+API description
+	The API used is called SerpApi. This is a python frontend to the Google
+	Search API. Serp, comes with functions for creating searches for many sites
+	such as Bing, Youtube, and Yelp.
+
+	SerpApi expects you to provide a dictionary of settings to be called by the
+	searching function. One of these settings is a field called 'query', which
+	is what the results will related to. What the search function returns is a
+	JSON document of the information needed to build the google search results
+	page. This JSON document has a lot of extraneous information, that I
+	stripped away by only using the field 'organic-results', which is the
+	title, link, and snippet related to a relevant document.
+
+Difficulties
+	One of the limitations of using SerpApi is that the free tier of the
+	service only allows 100 unique searches per month.
+
+
+-------------------------------------------------------------------------------
+
+Local Search:
+	Get the documents relevant to a users query in the song dataset.
+
+How to use
+	Type in a query for keyword search.
+	
+	1. Keywords: AND and OR can be used to specify what combinations of
+		keywords must be present in a document.
+
+	2. Text in quotes are implicately ANDed together, but order is not taken
+		into consideration, so "this that" is equivalent to this AND that.
+
+	3. Specifying Fields: The csv file we are searching has the fields
+		"Rank","Song","Artist","Year","Lyrics","Source". You can specify what
+		fields to make queries for by using the field name followed by a colon.
+		For example: artist:"john denver" rank:"1"
+
+		(Note that after specifying a field, only the first word is taken into
+		consideration. If you want to query multuple words for an artist use
+		quotations: artist"multuple words", and if you want to query for
+		multuple different artists, then you need to use the artist specifyer
+		for each of them: artist:"john denver" OR artist:"elton john")
+
+API description
+	Local search is done by the Whoosh API, which is a python implementation of
+	Lucene. The reason for using Whoosh is that Lucene is written in Java, and
+	would be difficult to integrate with Flask - the python backend used for
+	the site. To use Whoosh, one has to use tools provided by the library to
+	preprocess the csv file into a special data structure used by Whoosh to
+	create queries. After doing the conversion, you will be left with a folder
+	called 'index' that contains all the metadata required to complete
+	searches.
+
+	Whoosh comes with built in functions for performing searching, and allows
+	you to build custom searcher objects that allow one to customize Whoosh's
+	searching behavior.
+
+	For searching one needs to make a Whoosh indexer, which acts as a gateway
+	to control how one access the indexed data.  From the indexer one creates a
+	searcher object which takes in a query and returns the results.
+
+	For making the snippets I instantiated a fragmenter, which takes the
+	documents returned by the searcher, and splits them into fragments of the
+	document that contain hits from the query. You can specify the maximum
+	fragment ammount and what size in characters to make them, and how much of
+	that length should be before and after the keyword to provide context. I then
+	passed the fragments to a highlighter object that returns html of the
+	fragments with specified tags around the keywords.
+
+Difficulties
+	Whoosh is a fairly involved library to both setup and use. There are a lot
+	of requiremtns and moving parts that need to be setup correctly in order to
+	work. Because of this it took a long time to get things up and running.
+
+	Whoosh is a small experimental project, so there are limited resources
+	online for learning how to Whoosh works. This made it difficult to figure
+	out how to use all its features. Fortunately for me, the documentation is
+	comprehensive, even if a bit difficult to understand at some parts.
+	-------------------------------------------------------------------------------
